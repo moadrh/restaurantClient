@@ -1,0 +1,85 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Gestion des tables</strong>
+        </div>
+
+        <form [formGroup]="tableForm" class="form-horizontal">
+          <div class="card-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Code</label>
+              <div class="col-md-9">
+                <input type="number" class="form-control" formControlName="code" [(ngModel)]="selectedTable.code"
+                  placeholder="">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn btn-primary"
+              (click)="operation == 'add' ? addTable() : updateTable()">
+              {{operation == 'add' ? 'Ajouter' :
+                        operation == 'edit' ? 'Modifier' : ''}}</button>
+            <button type="reset" class="btn btn btn-danger"> Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attention !</h4>
+          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Voulez-vous supprimer les données de cette table {{selectedTable.code}}  ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide();initTable()">Annuler</button>
+          <button type="button" class="btn btn-danger" (click)="deleteTable();dangerModal.hide()">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Liste des Tables
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>CODE</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let table of tables">
+                <td>{{table.id}}</td>
+                <td>{{table.code}}</td>
+                <td><button class="btn btn-warning mr-1"
+                    (click)="selectedTable=table ;operation='edit';">Modifier</button></td>
+                <td><button type="button" class="btn btn-danger mr-1" data-toggle="modal"
+                    (click)="selectedTable=table ;dangerModal.show()">
+                    supprimer
+                  </button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

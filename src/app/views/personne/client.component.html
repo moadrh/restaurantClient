@@ -1,0 +1,148 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Gestion des Clients</strong>
+        </div>
+
+        <form [formGroup]="clientForm" class="form-horizontal">
+          <div class="card-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Nom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="nom" [(ngModel)]="selectedClient.nom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Prenom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="prenom" [(ngModel)]="selectedClient.prenom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="date-input">Date de naissance</label>
+              <div class="col-md-9">
+                <input class="form-control" type="date" formControlName="dateNaissance"
+                  [(ngModel)]="selectedClient.dateNaissance" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Ville</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="ville" [(ngModel)]="selectedClient.ville"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Adresse</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="adresse" [(ngModel)]="selectedClient.adresse"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="email-input">Email</label>
+              <div class="col-md-9">
+                <input type="email" class="form-control" formControlName="login" [(ngModel)]="selectedClient.login"
+                  placeholder="" autocomplete="email">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="password-input">Mot de passe</label>
+              <div class="col-md-9">
+                <input type="password" class="form-control" formControlName="password"
+                  [(ngModel)]="selectedClient.password" placeholder="" autocomplete="current-password">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Carte de fidélité</label>
+              <div class="col-md-9">
+                <input type="number" class="form-control" formControlName="numCarteFildelite"
+                  [(ngModel)]="selectedClient.numCarteFildelite" placeholder="">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn btn-primary"
+              (click)="operation == 'add' ? addClient() : updateClient()">
+              {{operation == 'add' ? 'Ajouter' :
+                        operation == 'edit' ? 'Modifier' : ''}}</button>
+            <button type="reset" class="btn btn btn-danger"> Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attention !</h4>
+          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Voulez-vous supprimer les données de {{selectedClient.nom}} {{selectedClient.prenom}} ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide();initClient()">Annuler</button>
+          <button type="button" class="btn btn-danger" (click)="deleteClient();dangerModal.hide()">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Liste des Clients
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NOM</th>
+                <th>PRENOM</th>
+                <th>DATE DE NAISSANCE</th>
+                <th>VILLE</th>
+                <th>ADRESSE</th>
+                <th>EMAIL</th>
+                <th>MOT DE PASSE</th>
+                <th>Carte de fidélité</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let client of clients">
+                <td>{{client.id}}</td>
+                <td>{{client.nom}}</td>
+                <td>{{client.prenom}}</td>
+                <td>{{client.dateNaissance | date: 'dd/MM/yyyy'}}</td>
+                <td>{{client.ville}}</td>
+                <td>{{client.adresse}}</td>
+                <td>{{client.login}}</td>
+                <td>{{client.password}}</td>
+                <td>{{client.numCarteFildelite}}</td>
+                <td><button class="btn btn-warning mr-1"
+                    (click)="selectedClient=client ;operation='edit';">Modifier</button></td>
+                <td><button type="button" class="btn btn-danger mr-1" data-toggle="modal"
+                    (click)="selectedClient=client ;dangerModal.show()">
+                    supprimer
+                  </button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

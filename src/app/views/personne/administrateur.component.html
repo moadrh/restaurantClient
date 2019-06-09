@@ -1,0 +1,141 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Gestion des administrateurs</strong>
+        </div>
+
+        <form [formGroup]="administrateurForm" class="form-horizontal">
+          <div class="card-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Nom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="nom" [(ngModel)]="selectedAdministrateur.nom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Prenom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="prenom" [(ngModel)]="selectedAdministrateur.prenom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="date-input">Date de naissance</label>
+              <div class="col-md-9">
+                <input class="form-control" type="date" formControlName="dateNaissance"
+                  [(ngModel)]="selectedAdministrateur.dateNaissance" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Ville</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="ville" [(ngModel)]="selectedAdministrateur.ville"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Adresse</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="adresse" [(ngModel)]="selectedAdministrateur.adresse"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="email-input">Email</label>
+              <div class="col-md-9">
+                <input type="email" class="form-control" formControlName="login" [(ngModel)]="selectedAdministrateur.login"
+                  placeholder="" autocomplete="email">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="password-input">Mot de passe</label>
+              <div class="col-md-9">
+                <input type="password" class="form-control" formControlName="password"
+                  [(ngModel)]="selectedAdministrateur.password" placeholder="" autocomplete="current-password">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn btn-primary"
+              (click)="operation == 'add' ? addAdministrateur() : updateAdministrateur()">
+              {{operation == 'add' ? 'Ajouter' :
+                        operation == 'edit' ? 'Modifier' : ''}}</button>
+            <button type="reset" class="btn btn btn-danger"> Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attention !</h4>
+          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Voulez-vous supprimer les données de {{selectedAdministrateur.nom}} {{selectedAdministrateur.prenom}} ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide();initAdministrateur()">Annuler</button>
+          <button type="button" class="btn btn-danger" (click)="deleteAdministrateur();dangerModal.hide()">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Liste des Administrateurs
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NOM</th>
+                <th>PRENOM</th>
+                <th>DATE DE NAISSANCE</th>
+                <th>VILLE</th>
+                <th>ADRESSE</th>
+                <th>EMAIL</th>
+                <th>MOT DE PASSE</th>
+                <th>DIPLOME</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let administrateur of administrateurs">
+                <td>{{administrateur.id}}</td>
+                <td>{{administrateur.nom}}</td>
+                <td>{{administrateur.prenom}}</td>
+                <td>{{administrateur.dateNaissance | date: 'dd/MM/yyyy'}}</td>
+                <td>{{administrateur.ville}}</td>
+                <td>{{administrateur.adresse}}</td>
+                <td>{{administrateur.login}}</td>
+                <td>{{administrateur.password}}</td>
+                <td>{{administrateur.diplome}}</td>
+                <td><button class="btn btn-warning mr-1"
+                    (click)="selectedAdministrateur=administrateur ;operation='edit';">Modifier</button></td>
+                <td><button type="button" class="btn btn-danger mr-1" data-toggle="modal"
+                    (click)="selectedAdministrateur=administrateur ;dangerModal.show()">
+                    supprimer
+                  </button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

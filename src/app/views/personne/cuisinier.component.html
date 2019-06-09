@@ -1,0 +1,148 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Gestion des Cuisiniers</strong>
+        </div>
+
+        <form [formGroup]="cuisinierForm" class="form-horizontal">
+          <div class="card-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Nom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="nom" [(ngModel)]="selectedCuisinier.nom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Prenom</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="prenom" [(ngModel)]="selectedCuisinier.prenom"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="date-input">Date de naissance</label>
+              <div class="col-md-9">
+                <input class="form-control" type="date" formControlName="dateNaissance"
+                  [(ngModel)]="selectedCuisinier.dateNaissance" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Ville</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="ville" [(ngModel)]="selectedCuisinier.ville"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Adresse</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="adresse" [(ngModel)]="selectedCuisinier.adresse"
+                  placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="email-input">Email</label>
+              <div class="col-md-9">
+                <input type="email" class="form-control" formControlName="login" [(ngModel)]="selectedCuisinier.login"
+                  placeholder="" autocomplete="email">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="password-input">Mot de passe</label>
+              <div class="col-md-9">
+                <input type="password" class="form-control" formControlName="password"
+                  [(ngModel)]="selectedCuisinier.password" placeholder="" autocomplete="current-password">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Diplome</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" formControlName="diplome"
+                  [(ngModel)]="selectedCuisinier.diplome" placeholder="">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn btn-primary"
+              (click)="operation == 'add' ? addCuisinier() : updateCuisinier()">
+              {{operation == 'add' ? 'Ajouter' :
+                        operation == 'edit' ? 'Modifier' : ''}}</button>
+            <button type="reset" class="btn btn btn-danger"> Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attention !</h4>
+          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Voulez-vous supprimer les données de {{selectedCuisinier.nom}} {{selectedCuisinier.prenom}} ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide();initCuisinier()">Annuler</button>
+          <button type="button" class="btn btn-danger" (click)="deleteCuisinier();dangerModal.hide()">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Liste des cuisiniers
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NOM</th>
+                <th>PRENOM</th>
+                <th>DATE DE NAISSANCE</th>
+                <th>VILLE</th>
+                <th>ADRESSE</th>
+                <th>EMAIL</th>
+                <th>MOT DE PASSE</th>
+                <th>DIPLOME</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cuisinier of cuisiniers">
+                <td>{{cuisinier.id}}</td>
+                <td>{{cuisinier.nom}}</td>
+                <td>{{cuisinier.prenom}}</td>
+                <td>{{cuisinier.dateNaissance | date: 'dd/MM/yyyy'}}</td>
+                <td>{{cuisinier.ville}}</td>
+                <td>{{cuisinier.adresse}}</td>
+                <td>{{cuisinier.login}}</td>
+                <td>{{cuisinier.password}}</td>
+                <td>{{cuisinier.diplome}}</td>
+                <td><button class="btn btn-warning mr-1"
+                    (click)="selectedCuisinier=cuisinier ;operation='edit';">Modifier</button></td>
+                <td><button type="button" class="btn btn-danger mr-1" data-toggle="modal"
+                    (click)="selectedCuisinier=cuisinier ;dangerModal.show()">
+                    supprimer
+                  </button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
